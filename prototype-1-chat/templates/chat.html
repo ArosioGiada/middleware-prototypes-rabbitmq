@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+
+    <script>
+        async function fetchMessages() {
+            const response = await fetch("/messages");
+            const data = await response.json();
+
+            const div = document.getElementById("messages");
+            div.innerHTML = "";
+
+            data.messages.forEach(msg => {
+                const p = document.createElement("p");
+                p.textContent = msg;
+                div.appendChild(p);
+            });
+
+            div.scrollTop = div.scrollHeight;
+        }
+
+        async function sendMessage(event) {
+            event.preventDefault();
+
+            const input = document.getElementById("message");
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            await fetch("/send", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ message })
+            });
+
+            input.value = "";
+            fetchMessages();
+        }
+
+        setInterval(fetchMessages, 1000);
+        window.onload = fetchMessages;
+    </script>
+</head>
+<body>
+
+<h2>Room: {{ room }}</h2>
+<p><strong>User:</strong> {{ username }}</p>
+
+<div id="messages" style="border:1px solid #ccc; height:300px; width:600px; overflow-y:scroll;"></div>
+
+<form onsubmit="sendMessage(event)">
+    <input type="text" id="message" required>
+    <button type="submit">Send</button>
+</form>
+
+<br>
+
+<form method="get" action="/change-room" style="display:inline;">
+    <button type="submit">Change Room</button>
+</form>
+
+<form method="get" action="/logout" style="display:inline;">
+    <button type="submit">Log Out</button>
+</form>
+
+</body>
+</html>
