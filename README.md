@@ -99,7 +99,5 @@ Full details, architecture, run instructions and known limitations: see [`protot
 ---
 
 > This project was completed as part of *PBT205 — Project-based Learning Studio: Technology* (Torrens University), a subject focused on building software prototypes using middleware and emerging technologies.
-
 This was a collaborative group project, developed and built together by a team of three.
-
 This repository is a curated, cleaned-up version of the original coursework project, prepared for portfolio purposes. Minor issues — hardcoded values, leftover debug logging, missing dependency files, and outdated documentation — have been reviewed and fixed after the original submission.
