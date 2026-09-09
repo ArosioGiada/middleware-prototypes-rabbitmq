@@ -1,4 +1,4 @@
-<img width="739" height="207" alt="Screenshot 2026-09-10 at 00 06 31" src="https://github.com/user-attachments/assets/d2a78c43-a26a-4f2e-9f32-c636806d372d" /># Middleware Prototypes — RabbitMQ
+# Middleware Prototypes — RabbitMQ
 
 Three message-driven prototypes built around **RabbitMQ** as a shared middleware, exploring how independent services can communicate asynchronously across different problem domains and, in one case, entirely different tech stacks.
 
@@ -50,11 +50,10 @@ Each prototype's own README (linked below) has the specific run instructions for
 
 A real-time, multi-room chat application. Users pick a username and a room, and exchange messages with everyone else currently in that room.
 
+<img width="739" height="207" alt="s - chat" src="https://github.com/user-attachments/assets/c241ffee-f90d-4a37-973a-dc9aad256be4" />
+
 **How it works:**
 RabbitMQ is configured with a **topic exchange** (`chat_exchange`). Each chat room corresponds to a routing key — when a user joins a room, the app creates a temporary, exclusive queue bound to that routing key, so it only receives messages sent to that specific room. Publishing and subscribing are fully decoupled: the sender doesn't know or care who (or how many people) will receive the message.
-
-**Structure:**
-<img width="739" height="207" alt="s - chat" src="https://github.com/user-attachments/assets/c241ffee-f90d-4a37-973a-dc9aad256be4" />
 
 **Stack:** Python, Flask (web interface + session handling), [pika](https://pika.readthedocs.io/) (RabbitMQ client), vanilla HTML/JS (polling-based UI updates).
 
@@ -75,10 +74,9 @@ Full details, architecture diagram and run instructions: see [`prototype-1-chat/
 
 A simplified single-stock exchange (`XYZ Corp`): traders submit buy/sell orders through a fire-and-forget CLI, and a long-running exchange service matches compatible orders using price-time priority before publishing completed trades — which any number of independent consumers (a terminal listener, a GUI dashboard) can observe simultaneously.
 
-**How it works:** two RabbitMQ queues, `orders` and `trades`, decouple every component. The exchange maintains an in-memory order book and matches a new order the moment a compatible opposite-side order exists at an acceptable price.
-
-**Structure:**
 <img width="739" height="207" alt="s - chat" src="https://github.com/user-attachments/assets/0219eb01-60ef-485e-8d11-ea09c2f3242d" />
+
+**How it works:** two RabbitMQ queues, `orders` and `trades`, decouple every component. The exchange maintains an in-memory order book and matches a new order the moment a compatible opposite-side order exists at an acceptable price.
 
 **Stack:** Python, pika, Tkinter (GUI).
 
@@ -90,12 +88,11 @@ Full details, run instructions and known limitations: see [`prototype-2-trading/
 
 A distributed contact-tracing system: users move around a shared grid in real time, and the system detects and records whenever two users occupy the same cell at the same time, letting a user later query who they've been in contact with.
 
+<img width="703" height="327" alt="s - tracing" src="https://github.com/user-attachments/assets/0877bd8f-a999-44a5-b240-3c3d22027e6d" />
+
 **How it works:** the system is split into five parts — a React/TypeScript client, a Rust backend, a separate Rust "Tracker" service, PostgreSQL, and RabbitMQ — communicating entirely through message exchanges rather than direct calls. Position updates are published to RabbitMQ on every move and broadcast to all connected clients in real time via Server-Sent Events; the Tracker consumes that same stream independently to detect and log collisions, and answers contact queries asynchronously over a dedicated request/response exchange.
 
 This was the prototype selected for extended development into the final product: a proper canvas-based GUI with pan/zoom, a lightweight session system, PostgreSQL persistence, and an end-to-end integration test.
-
-**Structure:**
-<img width="703" height="327" alt="s - tracing" src="https://github.com/user-attachments/assets/0877bd8f-a999-44a5-b240-3c3d22027e6d" />
 
 **Stack:** Rust (Axum, lapin, sqlx), React/TypeScript (Vite, HTML Canvas), PostgreSQL, RabbitMQ, Docker Compose.
 
