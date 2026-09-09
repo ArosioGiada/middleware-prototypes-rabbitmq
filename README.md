@@ -1,4 +1,4 @@
-# Middleware Prototypes — RabbitMQ
+<img width="739" height="207" alt="Screenshot 2026-09-10 at 00 06 31" src="https://github.com/user-attachments/assets/d2a78c43-a26a-4f2e-9f32-c636806d372d" /># Middleware Prototypes — RabbitMQ
 
 Three message-driven prototypes built around **RabbitMQ** as a shared middleware, exploring how independent services can communicate asynchronously across different problem domains and, in one case, entirely different tech stacks.
 
@@ -53,6 +53,9 @@ A real-time, multi-room chat application. Users pick a username and a room, and 
 **How it works:**
 RabbitMQ is configured with a **topic exchange** (`chat_exchange`). Each chat room corresponds to a routing key — when a user joins a room, the app creates a temporary, exclusive queue bound to that routing key, so it only receives messages sent to that specific room. Publishing and subscribing are fully decoupled: the sender doesn't know or care who (or how many people) will receive the message.
 
+**Structure:**
+<img width="739" height="207" alt="s - chat" src="https://github.com/user-attachments/assets/c241ffee-f90d-4a37-973a-dc9aad256be4" />
+
 **Stack:** Python, Flask (web interface + session handling), [pika](https://pika.readthedocs.io/) (RabbitMQ client), vanilla HTML/JS (polling-based UI updates).
 
 **Features:**
@@ -70,15 +73,18 @@ Full details, architecture diagram and run instructions: see [`prototype-1-chat/
 
 ## 2. Trading System
 
-*(Section to be completed after reviewing the code — placeholder)*
+A simplified single-stock exchange (`XYZ Corp`): traders submit buy/sell orders through a fire-and-forget CLI, and a long-running exchange service matches compatible orders using price-time priority before publishing completed trades — which any number of independent consumers (a terminal listener, a GUI dashboard) can observe simultaneously.
 
-A simplified single-stock exchange (`XYZ Corp`) where traders submit buy/sell orders with a price, and an exchange service matches compatible orders and publishes completed trades.
+**How it works:** two RabbitMQ queues, `orders` and `trades`, decouple every component. The exchange maintains an in-memory order book and matches a new order the moment a compatible opposite-side order exists at an acceptable price.
 
-Full details: see [`prototype-2-trading/README.md`](./prototype-2-trading/README.md).
+**Structure:**
+<img width="739" height="207" alt="s - chat" src="https://github.com/user-attachments/assets/0219eb01-60ef-485e-8d11-ea09c2f3242d" />
+
+**Stack:** Python, pika, Tkinter (GUI).
+
+Full details, run instructions and known limitations: see [`prototype-2-trading/README.md`](./prototype-2-trading/README.md).
 
 ---
-
-## 3. Contact Tracing
 
 ## 3. Contact Tracing
 
@@ -88,30 +94,12 @@ A distributed contact-tracing system: users move around a shared grid in real ti
 
 This was the prototype selected for extended development into the final product: a proper canvas-based GUI with pan/zoom, a lightweight session system, PostgreSQL persistence, and an end-to-end integration test.
 
+**Structure:**
+<img width="703" height="327" alt="s - tracing" src="https://github.com/user-attachments/assets/0877bd8f-a999-44a5-b240-3c3d22027e6d" />
+
 **Stack:** Rust (Axum, lapin, sqlx), React/TypeScript (Vite, HTML Canvas), PostgreSQL, RabbitMQ, Docker Compose.
 
 Full details, architecture, run instructions and known limitations: see [`prototype-3-contact-tracing/README.md`](./prototype-3-contact-tracing/README.md).
-
----
-
-## Repository structure
-
-```
-middleware-prototypes-rabbitmq/
-├── README.md
-├── .gitignore
-├── prototype-1-chat/
-│   ├── README.md
-│   ├── app.py
-│   ├── rabbitmq_utils.py
-│   ├── requirements.txt
-│   ├── templates/
-│   └── previous-versions/
-├── prototype-2-trading/
-│   └── ...
-└── prototype-3-contact-tracing/
-    └── ...
-```
 
 ---
 
