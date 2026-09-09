@@ -74,7 +74,7 @@ Full details, architecture diagram and run instructions: see [`prototype-1-chat/
 
 A simplified single-stock exchange (`XYZ Corp`): traders submit buy/sell orders through a fire-and-forget CLI, and a long-running exchange service matches compatible orders using price-time priority before publishing completed trades — which any number of independent consumers (a terminal listener, a GUI dashboard) can observe simultaneously.
 
-<img width="739" height="207" alt="s - chat" src="https://github.com/user-attachments/assets/0219eb01-60ef-485e-8d11-ea09c2f3242d" />
+<img width="703" height="334" alt="s - trading" src="https://github.com/user-attachments/assets/fca82a48-2a07-4587-a53b-72ced0e962a4" />
 
 **How it works:** two RabbitMQ queues, `orders` and `trades`, decouple every component. The exchange maintains an in-memory order book and matches a new order the moment a compatible opposite-side order exists at an acceptable price.
 
