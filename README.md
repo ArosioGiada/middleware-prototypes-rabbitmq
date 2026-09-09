@@ -80,11 +80,17 @@ Full details: see [`prototype-2-trading/README.md`](./prototype-2-trading/README
 
 ## 3. Contact Tracing
 
-*(Section to be completed after reviewing the code — placeholder)*
+## 3. Contact Tracing
 
-A position-tracking system where users move around a shared grid; the system detects and records when two users occupy the same cell at the same time, and lets a user query who they've been in contact with. This was the prototype selected for extended development into the final product, adding a proper GUI, authentication, and persistence.
+A distributed contact-tracing system: users move around a shared grid in real time, and the system detects and records whenever two users occupy the same cell at the same time, letting a user later query who they've been in contact with.
 
-Full details: see [`prototype-3-contact-tracing/README.md`](./prototype-3-contact-tracing/README.md).
+**How it works:** the system is split into five parts — a React/TypeScript client, a Rust backend, a separate Rust "Tracker" service, PostgreSQL, and RabbitMQ — communicating entirely through message exchanges rather than direct calls. Position updates are published to RabbitMQ on every move and broadcast to all connected clients in real time via Server-Sent Events; the Tracker consumes that same stream independently to detect and log collisions, and answers contact queries asynchronously over a dedicated request/response exchange.
+
+This was the prototype selected for extended development into the final product: a proper canvas-based GUI with pan/zoom, a lightweight session system, PostgreSQL persistence, and an end-to-end integration test.
+
+**Stack:** Rust (Axum, lapin, sqlx), React/TypeScript (Vite, HTML Canvas), PostgreSQL, RabbitMQ, Docker Compose.
+
+Full details, architecture, run instructions and known limitations: see [`prototype-3-contact-tracing/README.md`](./prototype-3-contact-tracing/README.md).
 
 ---
 
@@ -110,4 +116,4 @@ middleware-prototypes-rabbitmq/
 ---
 
 > This was a collaborative group project, developed and built together by a team of three.
-This repository is a curated, cleaned-up version of the original coursework project, prepared for portfolio purposes. Minor issues (hardcoded values, missing error handling, unused debug logging, etc.) have been reviewed and fixed after the original submission. The core logic, architecture and functionality are unchanged from what was submitted and assessed.
+This repository is a curated, cleaned-up version of the original coursework project, prepared for portfolio purposes. Minor issues (hardcoded values, missing error handling, unused debug logging, README, etc.) have been reviewed and fixed after the original submission. The core logic, architecture and functionality are unchanged from what was submitted and assessed.
