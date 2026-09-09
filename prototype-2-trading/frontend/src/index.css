@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+
+html {
+    font-family: "Google Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "GRAD" 0;
+
+    width: 100%;
+    height: 100%;
+
+    body {
+        margin: 0;
+
+        width: 100%;
+        height: 100%;
+
+        #root {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+input {
+    all: unset;
+    background-color: white;
+    border-radius: 16px;
+    font-size: 1.5rem;
+
+    min-width: 0;
+    width: 0;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    all: unset;
+    background-color: white;
+    border-radius: 16px;
+    font-size: 1.5rem;
+
+    min-width: 0;
+    width: fit-content;
+    padding: 8px;
+    box-sizing: border-box;
+
+    cursor: pointer;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}

@@ -1,0 +1,97 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.2.3-management
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "5672:5672"      # AMQP
+      - "15672:15672"    # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: secret
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+
+
+  postgres:
+    image: postgres:18.2
+    healthcheck:
+      test: pg_isready -U admin -d postgres
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@localhost
+      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_CONFIG_GLOBALLY_DELIVERABLE: 'False'
+      PGADMIN_CONFIG_ALLOW_SPECIAL_EMAIL_DOMAINS: '["localhost"]'
+    ports:
+      - "15673:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.dockerfile
+      args:
+        TARGET: ${TARGET}
+        PROFILE: ${PROFILE}
+    environment:
+      RUST_LOG: info,tower_http=trace
+      WIDTH: 128
+      HEIGHT: 128
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./assets:/assets
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+
+
+  tracker:
+    build:
+      context: .
+      dockerfile: docker/tracker.dockerfile
+      args:
+        TARGET: ${TARGET}
+        PROFILE: ${PROFILE}
+    environment:
+      RUST_LOG: info,tower_http=trace
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
