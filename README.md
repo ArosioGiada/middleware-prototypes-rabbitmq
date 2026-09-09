@@ -101,4 +101,4 @@ Full details, architecture, run instructions and known limitations: see [`protot
 ---
 
 > This was a collaborative group project, developed and built together by a team of three.
-This repository is a curated, cleaned-up version of the original coursework project, prepared for portfolio purposes. Minor issues (hardcoded values, missing error handling, unused debug logging, README, etc.) have been reviewed and fixed after the original submission. The core logic, architecture and functionality are unchanged from what was submitted and assessed.
+This repository is a curated, cleaned-up version of the original coursework project, prepared for portfolio purposes. Minor issues — hardcoded values, leftover debug logging, missing dependency files, and outdated documentation — have been reviewed and fixed after the original submission.
