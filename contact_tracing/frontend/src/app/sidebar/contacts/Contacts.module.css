@@ -1,0 +1,82 @@
+.Contacts {
+    display: flex;
+    flex-direction: column;
+
+    /* Mobile: natural height; the sidebar handles scrolling */
+    flex: 0 0 auto;
+    min-width: 0;
+
+    border: solid black 2px;
+    border-radius: 16px;
+    padding: 12px;
+    gap: 12px;
+
+    & > .Search {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        & > input {
+            flex: 1 1 140px;
+        }
+
+        & > button {
+            flex: 0 0 auto;
+        }
+    }
+
+    & > .Container {
+        display: flex;
+        flex-direction: column;
+
+        /* Mobile: stack contacts naturally; sidebar provides the scroll */
+        flex: 0 0 auto;
+        gap: 12px;
+
+        & > h3 {
+            text-align: left;
+            font-size: 1rem;
+            overflow-wrap: anywhere;
+        }
+
+        & > h3.Error {
+            text-align: center;
+        }
+    }
+
+    @media (min-width: 768px) {
+        border-radius: 24px;
+        padding: 16px;
+        gap: 16px;
+
+        & > .Search {
+            gap: 12px;
+        }
+
+        & > .Container {
+            gap: 16px;
+
+            & > h3 {
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    @media (min-width: 1024px) {
+        border-radius: 32px;
+
+        /* Desktop: contacts wrapper fills the sidebar; inner list scrolls */
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+
+        & > .Container {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+    }
+}

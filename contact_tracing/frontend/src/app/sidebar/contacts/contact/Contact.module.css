@@ -1,0 +1,33 @@
+.Contact {
+    border-radius: 12px;
+    background-color: lightgreen;
+    padding: 12px;
+
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: 0.75rem;
+    row-gap: 4px;
+
+    min-width: 0;
+
+    & > h3 {
+        display: contents;
+        font-size: 0.95rem;
+
+        & > span {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            min-width: 0;
+        }
+    }
+
+    @media (min-width: 768px) {
+        border-radius: 16px;
+        padding: 16px;
+        column-gap: 1rem;
+
+        & > h3 {
+            font-size: 1.05rem;
+        }
+    }
+}
