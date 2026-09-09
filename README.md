@@ -2,9 +2,7 @@
 
 Three message-driven prototypes built around **RabbitMQ** as a shared middleware, exploring how independent services can communicate asynchronously across different problem domains and, in one case, entirely different tech stacks.
 
-This project was completed as part of *PBT205 — Project-based Learning Studio: Technology* (Torrens University), a subject focused on building software prototypes using middleware and emerging technologies in a team environment.
-
-> This was a collaborative group project, developed and built together by a team of three.
+This project was completed as part of *PBT205 — Project-based Learning Studio: Technology* (Torrens University), a subject focused on building software prototypes using middleware and emerging technologies.
 
 ---
 
@@ -108,3 +106,7 @@ middleware-prototypes-rabbitmq/
 └── prototype-3-contact-tracing/
     └── ...
 ```
+
+---
+
+> This was a collaborative group project, developed and built together by a team of three.
